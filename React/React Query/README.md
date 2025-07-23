@@ -2,26 +2,33 @@
 
 현재 비동기 데이터를 효율적으로 관리하는 방법 - React Query
 
+---
+
+![](https://velog.velcdn.com/images/givpro22/post/101af652-a613-4a72-b555-68ebf946acf2/image.png)
+
 ## React Query
 
 React Query는 서버 상태를 관리하는 라이브러리로, 데이터 페칭, 캐싱, 동기화 및 서버 상태의 업데이트를 효율적으로 처리해줘요.
 
-React Query를 사용하는 이유는 꼭 Redux를 대체하기 위함은 아니지만 오늘은 Redux에서 왜 React Query로 넘어가게 되었는지를 중심으로 이야기 해보려고 해요.
+React Query를 사용하는 이유는 꼭 Redux를 대체하기 위함은 아니지만 Redux에서 왜 React Query로 넘어가게 되었는지를 중심으로
 
 ### 1. 서버 상태와 클라이언트 상태의 분리
 
 과거에는 전역 상태 관리 라이브러리(예: Redux)를 사용해서 서버 상태와 클라이언트 상태를 모두 관리하는 것이 일반적이었어요. 하지만 서버 상태와 클라이언트 상태는 본질적으로 다르기 때문에 이를 분리해서 관리하는 것이 더 효율적이에요.
 
-클라이언트 상태: 사용자 인터페이스의 일시적 상태를 관리해요. 예를 들어, 모달 창의 열림/닫힘 상태, 폼 입력값 등이 이에 해당해요.
-서버 상태: 외부 서버에서 가져온 데이터를 관리해요. 예를 들어, 사용자 프로필 데이터, 게시물 리스트 등이 이에 해당해요.
+- `클라이언트 상태`: 사용자 인터페이스의 일시적 상태를 관리해요. 예를 들어, 모달 창의 열림/닫힘 상태, 폼 입력값 등이 이에 해당해요.
+
+- `서버 상태`: 외부 서버에서 가져온 데이터를 관리해요. 예를 들어, 사용자 프로필 데이터, 게시물 리스트 등이 이에 해당해요.
+
 React Query는 서버 상태 관리를 전문적으로 처리하는 라이브러리로, 서버 상태를 더 효율적으로 관리할 수 있게 해줘요.
 
 ### 2. 데이터 페칭 및 캐싱의 자동화
 
 React Query는 데이터 페칭과 캐싱을 자동으로 처리해줘요. 이는 개발자가 수동으로 데이터 페칭 로직을 작성하고 캐시를 관리해야 하는 번거로움을 줄여줘요.
 
-자동 캐싱: React Query는 데이터를 자동으로 캐싱하고, 동일한 요청이 다시 발생할 때 캐시된 데이터를 사용해 불필요한 네트워크 요청을 줄여요.
-자동 리페칭: 데이터의 신선도를 유지하기 위해 특정 조건(예: 컴포넌트가 마운트될 때, 일정 시간 간격마다)에서 자동으로 데이터를 리페칭해요.
+- `자동 캐싱`: React Query는 데이터를 자동으로 캐싱하고, 동일한 요청이 다시 발생할 때 캐시된 데이터를 사용해 불필요한 네트워크 요청을 줄여요.
+
+- `자동 리페칭`: 데이터의 신선도를 유지하기 위해 특정 조건(예: 컴포넌트가 마운트될 때, 일정 시간 간격마다)에서 자동으로 데이터를 리페칭해요.
 
 ### 3. 복잡한 비동기 로직의 간소화
 
@@ -42,78 +49,6 @@ React Query는 강력한 개발자 도구(React Query DevTools)를 제공해요.
 ### 6. 커뮤니티와 생태계의 성장
 
 React Query는 점점 더 많은 개발자들이 채택하면서 커뮤니티와 생태계가 성장하고 있어요. 이는 더 많은 리소스, 예제, 플러그인 등을 사용할 수 있게 해줘요.
-
-### 1. 설치
-
-```
-npm install @tanstack/react-query
-// axios를 사용할 예정이라면 axios도 설치
-```
-
-### 2. React Query 설정
-
-React Query를 사용하기 위해서는 QueryClient와 QueryClientProvider를 설정해야 해요. 이를 통해 React Query가 애플리케이션 전반에서 쿼리를 관리할 수 있게 해줘요.
-
-index.tsx 파일이나 App.tsx 파일에 다음과 같이 설정해요.
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from './App';
-
-const queryClient = new QueryClient();
-
-ReactDOM.render(
-<QueryClientProvider client={queryClient}>
-<App />
-</QueryClientProvider>,
-document.getElementById('root')
-);
-
-## useQuery
-
-useQuery 훅을 사용해서 데이터를 가져오고, 로딩 상태와 에러 상태를 관리해요.
-
-```
-  const { data, error, isLoading } = useQuery<WeatherData>({
-    queryKey: ['weatherData'],
-    queryFn: fetchWeather
-  });
-```
-
-- ['weatherData']는 쿼리 키예요. 이 키를 사용해서 쿼리를 식별하고 캐시를 관리해요.
-- fetchWeather는 데이터를 가져오는 비동기 함수예요.
-
-> 주의, React Query는 Redux의 무조건적인 대체제는 아니에요!
-> React Query가 많은 장점을 가지고 있지만, Redux를 완전히 대체할 수는 없어요. 두 라이브러리는 서로 다른 목적과 사용 사례를 가지고 있기 때문이에요.
-
-## useMutation
-
-`mutationFn`
-반드시 필요. 실제 API 요청을 보내는 함수입니다. 보통 axios.post(...) 같은 함수
-`onSuccess(data, variables, context)`
-요청이 성공했을 때 실행할 콜백. 예: 알림 띄우기, 페이지 이동 등
-`onError(error, variables, context)`
-요청이 실패했을 때 실행할 콜백. 에러 토스트 띄우기 등에 사용
-`onSettled(data, error, variables, context)`
-성공하든 실패하든 항상 실행되는 콜백 (예: 로딩 종료 처리 등)
-`mutationKey`
-이 mutation을 구분하는 고유 키 (캐시나 Devtools에서 구분할 때 사용됨)
-
-## useInfiniteQuery
-
-### 무한스크롤 구현
-
-`queryKey`
-쿼리 식별자 (캐싱 키). 일반적으로 배열 형태
-`initialPageParam`
-useInfiniteQuery에서 페이지네이션을 시작할 때 사용할 초기 커서 값을 설정하는 옵션
-`queryFn`
-페이지 데이터를 가져오는 비동기 함수 (pageParam을 인자로 받음)
-`pageParam`
-현재 페이지 커서 값 (초기값은 0, 이후엔 getNextPageParam이 반환하는 값)
-`getNextPageParam`
-다음 페이지 커서를 추출하는 함수 (마지막 응답 기준으로 다음 요청의 커서 추출)
 
 ---
 
@@ -144,6 +79,154 @@ useInfiniteQuery에서 페이지네이션을 시작할 때 사용할 초기 커�
 
 - Redux는 미들웨어(Redux Thunk, Redux Saga 등)를 통해 비동기 작업과 복잡한 상태 변경 로직을 처리할 수 있어요. 이는 다양한 확장성과 커스터마이징 가능성을 제공해요.
 - React Query는 비동기 데이터 페칭에 특화되어 있지만, 복잡한 클라이언트 측 상태 로직을 처리하는 데는 한계가 있어요.
-  정리
-  React Query와 Redux는 서로 보완적인 도구예요. React Query는 서버 상태 관리에 특화되어 있어 비동기 데이터 페칭과 캐싱을 효율적으로 처리할 수 있고, Redux는 클라이언트 상태 관리에 적합해 전역 상태를 중앙에서 관리하고 상태 변경을 일관성 있게 추적할 수 있어요.
-  따라서, 두 라이브러리를 함께 사용하면 애플리케이션의 상태 관리를 더욱 효과적으로 할 수 있어요. React Query가 서버 상태를 효율적으로 관리하는 동안, Redux는 클라이언트 상태를 중앙에서 일관성 있게 관리해 줘요.
+
+## 정리
+
+React Query와 Redux는 서로 보완적인 도구예요. React Query는 서버 상태 관리에 특화되어 있어 비동기 데이터 페칭과 캐싱을 효율적으로 처리할 수 있고, Redux는 클라이언트 상태 관리에 적합해 전역 상태를 중앙에서 관리하고 상태 변경을 일관성 있게 추적할 수 있어요.
+따라서, 두 라이브러리를 함께 사용하면 애플리케이션의 상태 관리를 더욱 효과적으로 할 수 있어요. React Query가 서버 상태를 효율적으로 관리하는 동안, Redux는 클라이언트 상태를 중앙에서 일관성 있게 관리해 줘요.
+
+---
+
+## React Query를 사용해보자
+
+### 1. 설치
+
+```
+npm install @tanstack/react-query
+```
+
+### 2. React Query 설정
+
+React Query를 사용하기 위해서는 QueryClient와 QueryClientProvider를 설정해야 해요. 이를 통해 React Query가 애플리케이션 전반에서 쿼리를 관리할 수 있게 해줘요.
+
+`index.tsx` 파일이나 `App.tsx` 파일에 다음과 같이 설정해요.
+
+```tsx
+import React from "react";
+import ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import App from "./App";
+
+const queryClient = new QueryClient();
+
+ReactDOM.render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>,
+  document.getElementById("root")
+);
+```
+
+---
+
+## useQuery
+
+useQuery 훅을 사용해서 데이터를 가져오고, 로딩 상태와 에러 상태를 관리해요.
+
+```tsx
+const { data, error, isLoading } = useQuery<WeatherData>({
+  queryKey: ["weatherData"],
+  queryFn: fetchWeather,
+});
+```
+
+- `['weatherData']`는 쿼리 키예요. 이 키를 사용해서 쿼리를 식별하고 캐시를 관리해요.
+- `fetchWeather`는 데이터를 가져오는 비동기 함수예요.
+
+> 주의, React Query는 Redux의 무조건적인 대체제는 아니에요!
+> React Query가 많은 장점을 가지고 있지만, Redux를 완전히 대체할 수는 없어요. 두 라이브러리는 서로 다른 목적과 사용 사례를 가지고 있기 때문이에요.
+
+---
+
+## useMutation
+
+useMutation 훅은 데이터를 읽는(read) 것이 아닌, 변경(create/update/delete) 작업을 수행할 때 사용해요.
+
+```tsx
+const mutation = useMutation({
+  mutationFn: postComment,
+  onSuccess: () => {
+    // 성공적으로 댓글을 작성한 후 처리
+    queryClient.invalidateQueries(["comments"]);
+  },
+});
+```
+
+- postComment는 서버에 데이터를 전송하는 비동기 함수예요.
+- onSuccess는 요청이 성공했을 때 실행되는 콜백 함수예요. 보통 캐시 무효화 등을 수행해요.
+- mutation.mutate(data) 형태로 실행해요.
+
+> 주의, useMutation은 서버 데이터를 변경할 때만 사용하고, 데이터를 가져올 때는 useQuery를 사용해요.
+
+`mutationFn`
+반드시 필요. 실제 API 요청을 보내는 함수입니다. 보통 axios.post(...) 같은 함수
+`onSuccess(data, variables, context)`
+요청이 성공했을 때 실행할 콜백. 예: 알림 띄우기, 페이지 이동 등
+`onError(error, variables, context)`
+요청이 실패했을 때 실행할 콜백. 에러 토스트 띄우기 등에 사용
+`onSettled(data, error, variables, context)`
+성공하든 실패하든 항상 실행되는 콜백 (예: 로딩 종료 처리 등)
+`mutationKey`
+이 mutation을 구분하는 고유 키 (캐시나 Devtools에서 구분할 때 사용됨)
+
+---
+
+## useInfiniteQuery
+
+useInfiniteQuery는 무한 스크롤 등에서 사용하는 훅으로, 여러 페이지의 데이터를 순차적으로 불러올 수 있어요.
+
+```tsx
+const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  useInfiniteQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
+  });
+```
+
+- queryKey는 캐시 구분용 키예요.
+- queryFn은 데이터를 가져오는 함수로, pageParam을 인자로 받아요.
+- getNextPageParam은 다음 페이지를 불러오기 위한 커서를 반환해요.
+- fetchNextPage()를 호출하면 다음 페이지 데이터를 불러와요.
+
+`queryKey`
+쿼리 식별자 (캐싱 키). 일반적으로 배열 형태
+`initialPageParam`
+useInfiniteQuery에서 페이지네이션을 시작할 때 사용할 초기 커서 값을 설정하는 옵션
+`queryFn`
+페이지 데이터를 가져오는 비동기 함수 (pageParam을 인자로 받음)
+`pageParam`
+현재 페이지 커서 값 (초기값은 0, 이후엔 getNextPageParam이 반환하는 값)
+`getNextPageParam`
+다음 페이지 커서를 추출하는 함수 (마지막 응답 기준으로 다음 요청의 커서 추출)
+
+> 주의, useQuery와 다르게 pageParam, getNextPageParam, initialPageParam 설정이 꼭 필요해요.
+
+---
+
+## useSuspenseQuery
+
+useSuspenseQuery는 React의 Suspense와 함께 사용할 수 있는 Query 훅이에요. 데이터를 기다리는 동안 자동으로 Suspense fallback을 보여줘요.
+
+```tsx
+const { data } = useSuspenseQuery({
+  queryKey: ["theme", themeId],
+  queryFn: () => fetchThemeInfo(themeId),
+});
+```
+
+- Suspense 컴포넌트 안에서만 사용할 수 있어요.
+- ErrorBoundary와 함께 사용해서 에러 처리도 함께 해야 해요.
+
+```tsx
+<ErrorBoundary fallback={<div>에러 발생</div>}>
+  <Suspense fallback={<div>로딩 중...</div>}>
+    <ThemeComponent />
+  </Suspense>
+</ErrorBoundary>
+```
+
+> 주의, useSuspenseQuery는 React 18+에서만 사용 가능하며, 쿼리에 suspense: true 옵션이 자동 적용돼요.
+
+---
